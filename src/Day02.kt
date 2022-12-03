@@ -2,8 +2,6 @@ import java.lang.IllegalArgumentException
 
 fun main() {
 
-
-
     fun part1(input: List<String>): Int {
         var sum = 0
 
@@ -12,8 +10,8 @@ fun main() {
             val one = plays[0]
             val two = plays[1]
 
-            val rockPaperScissorPart1 = RockPaperScissor.fromPartOne(one)?: throw IllegalArgumentException()
-            val rockPaperScissorPart2 = RockPaperScissor.fromPartTwo(two)?: throw IllegalArgumentException()
+            val rockPaperScissorPart1 = RockPaperScissor.fromPartOne(one)
+            val rockPaperScissorPart2 = RockPaperScissor.fromPartTwo(two)
 
             val score = calculateScore(rockPaperScissorPart1, rockPaperScissorPart2)
             sum += score
@@ -30,8 +28,8 @@ fun main() {
             val one = plays[0]
             val two = plays[1]
 
-            val opponent = RockPaperScissor.fromPartOne(one)?: throw IllegalArgumentException()
-            val rockPaperScissorPart2 = compareResult(opponent, two) ?: throw IllegalArgumentException()
+            val opponent = RockPaperScissor.fromPartOne(one)
+            val rockPaperScissorPart2 = compareResult(opponent, two)
 
             val score = calculateScore(opponent, rockPaperScissorPart2)
             sum += score
@@ -119,7 +117,7 @@ fun compareInputs(opponent : RockPaperScissor, mine : RockPaperScissor) : Int {
     }
 }
 
-fun compareResult(opponent : RockPaperScissor, input : String) : RockPaperScissor? {
+fun compareResult(opponent : RockPaperScissor, input : String) : RockPaperScissor {
 
     // lose     - x
     // draw     - y
@@ -129,7 +127,7 @@ fun compareResult(opponent : RockPaperScissor, input : String) : RockPaperScisso
         "x" -> "lose"
         "y" -> "draw"
         "z" -> "win"
-        else -> throw IllegalArgumentException()
+        else -> error("check your input")
     }
 
 
@@ -168,7 +166,7 @@ fun compareResult(opponent : RockPaperScissor, input : String) : RockPaperScisso
         }
     }
 
-    return null
+    error("check your input")
 }
 
 enum class RockPaperScissor {
@@ -177,21 +175,21 @@ enum class RockPaperScissor {
     SCISSOR;
 
     companion object {
-        fun fromPartOne(input: String): RockPaperScissor? {
+        fun fromPartOne(input: String): RockPaperScissor {
             return when (input.lowercase()) {
                 "a" -> ROCK
                 "b" -> PAPER
                 "c" -> SCISSOR
-                else -> null
+                else -> error("cleck your input")
             }
         }
 
-        fun fromPartTwo(input: String): RockPaperScissor? {
+        fun fromPartTwo(input: String): RockPaperScissor {
             return when (input.lowercase()) {
                 "x" -> ROCK
                 "y" -> PAPER
                 "z" -> SCISSOR
-                else -> null
+                else -> error("cleck your input")
             }
         }
     }
