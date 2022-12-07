@@ -56,18 +56,29 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return 0
+        val fileSystem = processInput(input)
+        val fileSystemDirs = fileSystem.getDirs()
+
+        val max = 70_000_000
+        val required = 30_000_000
+        val current = fileSystem.getFullSize()
+
+        return fileSystemDirs
+            .map { it.getFullSize() }
+            .filter { max - required > current - it }
+            .sortedBy { it }
+            .minBy { it }
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day07_test")
 
     check(part1(testInput) == 95437)
-    check(part2(testInput) == 0)
+    check(part2(testInput) == 24933642)
 
     val input = readInput("Day07")
     println(part1(input)) // 1444896
-    println(part2(input))
+    println(part2(input)) // 404395
 }
 
 enum class ElfCommand {
@@ -128,4 +139,3 @@ data class ElfFileItem(
 enum class ElfFileType {
     DIRECTORY, FILE
 }
-
