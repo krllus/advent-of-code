@@ -29,12 +29,15 @@ fun main() {
                     }
                 }
             }
+
             if (!repeatChar)
                 return index
         }
 
         error("index not found")
     }
+
+    fun isUnique(window : Array<Char>) = setOf(*window).size == window.size
 
     fun part1(input: List<String>): Int {
         return input.map { line ->
