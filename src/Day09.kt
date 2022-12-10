@@ -26,7 +26,6 @@ fun main() {
     }
 
     fun moveTail(
-        grid: Array<Array<String>>,
         headPosition: Position,
         oldHeadPosition: Position,
         tailPosition: Position,
@@ -64,6 +63,7 @@ fun main() {
 
         grid[headPosition.j][headPosition.i] = "s"
 
+
         for (movement in input.asRopeMovements()) {
             repeat(movement.moveSteps) {
                 val oldHeadPosition = headPosition.copy()
@@ -73,7 +73,7 @@ fun main() {
                     Direction.RIGHT -> headPosition.copy(i = headPosition.i + 1)
                     Direction.LEFT -> headPosition.copy(i = headPosition.i - 1)
                 }
-                tailPosition = moveTail(grid, headPosition, oldHeadPosition, tailPosition)
+                tailPosition = moveTail(headPosition, oldHeadPosition, tailPosition)
                 if (tailPosition.i >= rowSize) {
                     error("a tail greater then board size: $tailPosition, head: $headPosition prevHead: $oldHeadPosition input:$movement")
                 }
@@ -129,8 +129,14 @@ data class Position(val i: Int, val j: Int) {
 }
 
 data class Rope(
+    val head : RopeSegment,
+    val tail : RopeSegment
+)
+
+data class RopeSegment(
     val position: Position,
-    val parent: Rope? = null
+    val nextSegment : RopeSegment? = null,
+    val prevSegment : RopeSegment? = null
 )
 
 data class RopeMovement(val direction: Direction, val moveSteps: Int, var processed: Boolean = false)
