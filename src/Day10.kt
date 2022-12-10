@@ -37,74 +37,66 @@ fun main() {
     fun part2(input: List<String>): String {
         val cycleValueMap = mutableMapOf<Int, Int>()
 
-        var cycleCount = 1
-        cycleValueMap[cycleCount] = 1
+        cycleValueMap[0] = 1
+        var cycleCount = 0
 
         val sprite = Array(241) { '0' }
-        val rowSize = 40
         input.forEach { str ->
 
-            val parsedIndex = ((cycleCount) % rowSize)
-            val sprintIndexRange = setOf(parsedIndex - 1, parsedIndex, parsedIndex + 1).filter { it >= 0 }
-            var currentCrtIndex: Int?
+            val parsedIndex = (cycleCount % 40) + 1
+            val drawRange = listOf(parsedIndex - 1, parsedIndex, parsedIndex + 1)
+            var currentValue: Int?
 
             if (str.startsWith("noop")) {
-                currentCrtIndex = cycleValueMap[cycleCount]
-                if (currentCrtIndex in sprintIndexRange) {
+                cycleCount++
+
+                cycleValueMap[cycleCount] =
+                    cycleValueMap[cycleCount - 1] ?: error("previous value not defined $cycleCount")
+
+                currentValue = cycleValueMap[cycleCount]
+                if (currentValue in drawRange) {
                     sprite[cycleCount - 1] = '#'
                 } else {
                     sprite[cycleCount - 1] = '.'
                 }
-
-                cycleCount++
-                cycleValueMap[cycleCount] =
-                    cycleValueMap[cycleCount - 1] ?: error("previous value not defined $cycleCount")
-
             }
 
             if (str.startsWith("addx")) {
                 val value = str.split(" ").last().toInt()
-
-                currentCrtIndex = cycleValueMap[cycleCount]
-                if (currentCrtIndex in sprintIndexRange) {
-                    sprite[cycleCount - 1] = '#'
-                } else {
-                    sprite[cycleCount - 1] = '.'
-                }
-
                 cycleCount++
+
                 cycleValueMap[cycleCount] =
                     cycleValueMap[cycleCount - 1] ?: error("previous value not defined $cycleCount")
+                sprite[cycleCount - 1] = '.'
 
-                currentCrtIndex = cycleValueMap[cycleCount]
-                if (currentCrtIndex in sprintIndexRange) {
+                currentValue = cycleValueMap[cycleCount]
+                if (currentValue in drawRange) {
                     sprite[cycleCount - 1] = '#'
                 } else {
                     sprite[cycleCount - 1] = '.'
                 }
 
                 cycleCount++
+
                 cycleValueMap[cycleCount] =
                     cycleValueMap[cycleCount - 1]?.plus(value) ?: error("previous value not defined $cycleCount")
+                sprite[cycleCount - 1] = '.'
 
+                currentValue = cycleValueMap[cycleCount]
+                if (currentValue in drawRange) {
+                    sprite[cycleCount - 1] = '#'
+                } else {
+                    sprite[cycleCount - 1] = '.'
+                }
             }
         }
 
         val result = StringBuilder()
-        sprite.drop(0).forEachIndexed { index, char ->
+        sprite.forEachIndexed { index, char ->
             result.append(char)
-            if ((index + 1) % rowSize == 0)
+            if ((index + 1) % 40 == 0)
                 result.append('\n')
         }
-
-        var sum = 0
-
-        for (a in listOf(20, 60, 100, 140, 180, 220)) {
-            val cal = a * cycleValueMap[a - 1]!!
-            sum += cal
-        }
-        println(sum)
-
         return result.toString()
     }
 
@@ -112,7 +104,7 @@ fun main() {
     val testInput = readInput("Day10_test")
 
 //    check(part1(testInput) == 13140)
-    println(part2(testInput))
+    println(part2(testInput)) // CJAPJRE
 
     val input = readInput("Day10")
 //    println(part1(input))
