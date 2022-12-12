@@ -10,7 +10,7 @@ fun main() {
                 val items = lines[0].split(":").last()
                     .split(",")
                     .map {
-                        BagItem(it.trim().toULong())
+                        BagItem(it.trim().toLong())
                     }
                 val itemsStack = ArrayDeque<BagItem>()
                 itemsStack.addAll(items)
@@ -57,19 +57,34 @@ fun main() {
         }
     }
 
-    fun part2(input: String): Int {
+    fun part2(input: String): Long {
         val monkeysStr = input.split("\n\n")
         val monkeys: Map<Int, Monkey> = getMonkeys(monkeysStr)
-        return 0
+
+        repeat(10000) {
+            monkeys.values.forEach { monkey ->
+                val monkeySuccess = monkeys[monkey.testSuccessMonkeyId]
+                    ?: error("monkey success[${monkey.testSuccessMonkeyId} not found")
+                val monkeyFailure = monkeys[monkey.testFailureMonkeyId]
+                    ?: error("monkey failure[${monkey.testFailureMonkeyId} not found")
+                monkey.inspectItems(monkeySuccess, monkeyFailure)
+                monkeys.values.forEach { println(it) }
+                println()
+            }
+        }
+
+        val monkeysItemCount = monkeys.values.map { it.inspectedItem }.sortedDescending().take(2)
+
+        return monkeysItemCount[0].toLong() * monkeysItemCount[1].toLong()
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInputAsText("Day11_test")
-    check(part1(testInput) == 10605)
-    check(part2(testInput) == 0)
+//    check(part1(testInput) == 10605)
+//    check(part2(testInput) == 2713310158)
 
     val input = readInputAsText("Day11")
-    println(part1(input))
+//    println(part1(input))
     println(part2(input))
 }
 
@@ -98,7 +113,7 @@ data class Monkey(
     }
 
     private fun testItem(item: BagItem): Boolean {
-        return item.value % test.toULong() == 0UL
+        return item.value % test.toLong() == 0L
     }
 
     private fun receiveItem(bagItem: BagItem) {
@@ -111,15 +126,15 @@ data class Monkey(
 }
 
 data class BagItem(
-    var value: ULong,
+    var value: Long,
 ) {
     fun relief() {
-        this.value = this.value / 3UL
+        this.value = this.value % 9699690L
     }
 
     fun worry(operation: String) {
         val op = operation.split(" ").first()
-        val operationValue = operation.split(" ").last().toULongOrNull()
+        val operationValue = operation.split(" ").last().toLongOrNull()
         this.value = when (op) {
             "+" -> {
                 if (operationValue == null) {
