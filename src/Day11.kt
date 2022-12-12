@@ -98,7 +98,7 @@ data class Monkey(
     }
 
     private fun testItem(item: BagItem): Boolean {
-        return item.value.toInt() % test == 0
+        return item.value % test.toULong() == 0UL
     }
 
     private fun receiveItem(bagItem: BagItem) {
