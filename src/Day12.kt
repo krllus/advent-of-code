@@ -33,6 +33,7 @@ fun main() {
     check(part2(testInput) == 0)
 
     val input = readInput("Day12")
-    println(part1(input))
-    println(part2(input))
+    println(part1(input)) // w: 464, r: 476
+    println(part2(input)) // 
+
 }

@@ -84,8 +84,12 @@ fun distance(currentNode: Node, neighbor: Node): Int {
 
     if (valid) return 1
 
-    if(currentNode.value != 'z' && neighbor.value == 'E')
-        return Int.MIN_VALUE
+    if (neighbor.value == 'E') {
+        return if (currentNode.value == 'z')
+            1
+        else
+            Int.MIN_VALUE
+    }
 
     val diff = neighbor.value - currentNode.value
 
