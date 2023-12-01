@@ -3,7 +3,7 @@ package year_2023
 import Day
 import solve
 
-class Day01 : Day(day = 1, year = 2023, "First") {
+class Day01 : Day(day = 1, year = 2023, "Trebuchet?!") {
     override fun part1(): Int {
 
         return input.sumOf {
