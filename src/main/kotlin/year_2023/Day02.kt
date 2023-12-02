@@ -4,9 +4,9 @@ import Day
 import solve
 import kotlin.math.max
 
-class Day02 : Day(day = 2, year = 2023, "") {
+class Day02 : Day(day = 2, year = 2023, "Cube Conundrum") {
 
-    fun getGames() : Set<Game> {
+    private fun getGames() : Set<Game> {
         val games = mutableSetOf<Game>()
 
         for(entry in input){
