@@ -12,10 +12,11 @@ class Day02 : Day(day = 2, year = 2023, "Cube Conundrum") {
         for(entry in input){
             val gameStr = entry.split(":")
             val id = gameStr.first().split(" ").last().toInt()
-            val plays = gameStr.last().split(";")
+            val rounds = gameStr.last().split(";")
 
-            for(play in plays){
-                val cubes = play.split(",")
+            for(round in rounds){
+                val cubes = round.split(",")
+
                 var red = 0
                 var green = 0
                 var blue = 0
