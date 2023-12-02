@@ -2,7 +2,6 @@ package year_2023
 
 import Day
 import solve
-import kotlin.math.max
 
 class Day02 : Day(day = 2, year = 2023, "Cube Conundrum") {
 
@@ -38,30 +37,19 @@ class Day02 : Day(day = 2, year = 2023, "Cube Conundrum") {
     override fun part1(): Int{
         return getGames().groupBy { it.id }
             .mapNotNull {
-                val allPossible = it.value.all { g -> g.isPossible() }
-                if(allPossible) it.key
-                else null
+                if(it.value.any {game -> !game.isPossible() }) null
+                else it.key
             }.sum()
     }
 
     override fun part2(): Int{
         return getGames().groupBy { it.id }
             .map {
+                val maxRed = it.value.maxBy { game -> game.red }.red
+                val maxGreen = it.value.maxBy { game -> game.green }.green
+                val maxBlue = it.value.maxBy { game -> game.blue }.blue
 
-                val maxRed = it.value.reduce { acc, game ->
-                    if (acc.red > game.red) acc
-                    else game
-                }
-                val maxGreen = it.value.reduce { acc, game ->
-                    if (acc.green > game.green) acc
-                    else game
-                }
-                val maxBlue = it.value.reduce { acc, game ->
-                    if (acc.blue > game.blue) acc
-                    else game
-                }
-
-                maxRed.red * maxGreen.green * maxBlue.blue
+                maxRed * maxGreen * maxBlue
             }.sum()
     }
 }
