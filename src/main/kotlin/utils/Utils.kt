@@ -13,6 +13,7 @@ fun readInput(name: String) = File("src", "$name.txt")
 fun readInputAsText(name: String) = File("src", "$name.txt")
     .readText()
 
+fun Char.isStar() : Boolean {return this == '*'}
 
 /**
  * Converts string to md5 hash.
