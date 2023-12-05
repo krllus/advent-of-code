@@ -3,7 +3,7 @@ package year_2023
 import Day
 import solve
 
-class Day03 : Day(day = 3, year = 2023, "") {
+class Day03 : Day(day = 3, year = 2023, "Gear Ratios") {
     override fun part1(): Int {
         var sum = 0
         for (i in inputAsGrid.indices) {
