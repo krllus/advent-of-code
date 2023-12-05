@@ -2,7 +2,6 @@ package year_2023
 
 import Day
 import solve
-import kotlin.math.pow
 
 class Day04 : Day(day = 4, year = 2023, "Scratchcards") {
 
@@ -25,26 +24,47 @@ class Day04 : Day(day = 4, year = 2023, "Scratchcards") {
     }
 
     override fun part2(): Int {
-        return getCards().sumOf { it.calculatePoints() }
+        val cards = getCards().sortedBy { it.id }
+        val cardMap = mutableMapOf<Int, Int>()
+        val visited = mutableSetOf<Int>()
+
+        cards.forEach { card -> cardMap[card.id - 1] = 1 }
+
+        var selectedId = cards.first().id - 1
+        while (!visited.contains(selectedId) && selectedId < cards.size) {
+            visited.add(selectedId)
+            val count = cardMap[selectedId]
+            val card = cards[selectedId]
+            val matchingNumbers = card.calculateMatchingNumbers()
+            for (i in selectedId + 1..selectedId + matchingNumbers) {
+                cardMap[i] = (cardMap[i] ?: 1) + (count ?: 0)
+            }
+
+            selectedId++
+        }
+
+        return cardMap.values.sum()
     }
 
 }
 
 data class Card(
-    val id: Int,
-    val winningNumbers: List<Int>,
-    val myNumbers: List<Int>
+    val id: Int, val winningNumbers: List<Int>, val myNumbers: List<Int>
 ) {
     fun calculatePoints(): Int {
         var points = 0
-        for(number in myNumbers){
-            if(winningNumbers.contains(number)){
-                if(points == 0) points = 1
+        for (number in myNumbers) {
+            if (winningNumbers.contains(number)) {
+                if (points == 0) points = 1
                 else points *= 2
             }
         }
-        println("id: $id points:$points")
+
         return points
+    }
+
+    fun calculateMatchingNumbers(): Int {
+        return myNumbers.count { winningNumbers.contains(it) }
     }
 }
 
